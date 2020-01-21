@@ -51,6 +51,7 @@ namespace Inedo.Extensions.Docker.Operations.Compose
             var fileOps = await context.Agent.TryGetServiceAsync<ILinuxFileOperationsExecuter>() ?? await context.Agent.GetServiceAsync<IFileOperationsExecuter>();
             var procExec = await context.Agent.GetServiceAsync<IRemoteProcessExecuter>();
             var escapeArg = fileOps is ILinuxFileOperationsExecuter ? (Func<string, string>)Utils.EscapeLinuxArg : Utils.EscapeWindowsArg;
+            await fileOps.CreateDirectoryAsync(context.WorkingDirectory);
 
             var baseDir = await fileOps.GetBaseWorkingDirectoryAsync();
             await fileOps.CreateDirectoryAsync(fileOps.CombinePath(baseDir, "scripts"));

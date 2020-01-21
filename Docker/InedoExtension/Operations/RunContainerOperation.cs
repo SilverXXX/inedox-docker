@@ -55,6 +55,9 @@ namespace Inedo.Extensions.Docker.Operations
 
         public override async Task ExecuteAsync(IOperationExecutionContext context)
         {
+            var fileOps = await context.Agent.GetServiceAsync<IFileOperationsExecuter>();
+            await fileOps.CreateDirectoryAsync(context.WorkingDirectory);
+
             var containerId = new ContainerId(this.ContainerSource, this.RepositoryName, this.Tag);
             if (!string.IsNullOrEmpty(this.ContainerSource))
                 containerId = await this.PullAsync(context, containerId);

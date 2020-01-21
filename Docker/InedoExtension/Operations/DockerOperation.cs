@@ -41,6 +41,9 @@ namespace Inedo.Extensions.Docker.Operations
             var output = new List<string>();
             var error = new List<string>();
 
+            var fileOps = await context.Agent.GetServiceAsync<IFileOperationsExecuter>();
+            await fileOps.CreateDirectoryAsync(workingDirectory);
+
             var exec = await context.Agent.GetServiceAsync<IRemoteProcessExecuter>();
             using (var process = exec.CreateProcess(new RemoteProcessStartInfo { FileName = this.DockerExePath, Arguments = command + " " + arguments, WorkingDirectory = workingDirectory }))
             {
